@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+  <link id="hljs_css" rel="stylesheet" href="" />
+  <script src="//cdn.jsdelivr.net/highlight.js/9.4.0/highlight.min.js"></script>
+  <style>
+    #hljs_highlighted {
+      padding: 20px;
+      border: 2px solid red;
+      line-height: 1.4em;
+    }
+  </style>
+</head>
+<body>
+<h2>To Highlight</h2>
+<pre id="hljs_tohighlight" contenteditable="true" spellcheck="false">
+var Nexmo = require('nexmo');
+
+var nexmo = new Nexmo({apiKey: API_KEY, apiSecret: API_SECRET});
+nexmo.message.sendSms(TO_NUMBER, FROM_NUMBER, 'Hello from Nexmo!');
+</pre>
+<h2>Highlighted</h2>
+<pre><code class="js" id="hljs_highlighted">
+</code></pre>
+  <select id="hljs_style_select"></select>
+  <select id="hljs_lang_select"></select>
+  <button id="hljs_btn">highlight</button>
+</body>
+  <script>
+    var allStyles = ['agate.min.css','androidstudio.min.css','arduino-light.min.css','arta.min.css','ascetic.min.css','atelier-cave-dark.min.css','atelier-cave-light.min.css','atelier-dune-dark.min.css','atelier-dune-light.min.css','atelier-estuary-dark.min.css','atelier-estuary-light.min.css','atelier-forest-dark.min.css','atelier-forest-light.min.css','atelier-heath-dark.min.css','atelier-heath-light.min.css','atelier-lakeside-dark.min.css','atelier-lakeside-light.min.css','atelier-plateau-dark.min.css','atelier-plateau-light.min.css','atelier-savanna-dark.min.css','atelier-savanna-light.min.css','atelier-seaside-dark.min.css','atelier-seaside-light.min.css','atelier-sulphurpool-dark.min.css','atelier-sulphurpool-light.min.css','brown-paper.min.css','codepen-embed.min.css','color-brewer.min.css','dark.min.css','darkula.min.css','default.min.css','docco.min.css','dracula.min.css','far.min.css','foundation.min.css','github-gist.min.css','github.min.css','googlecode.min.css','grayscale.min.css','gruvbox-dark.min.css','gruvbox-light.min.css','hopscotch.min.css','hybrid.min.css','idea.min.css','ir-black.min.css','kimbie.dark.min.css','kimbie.light.min.css','magula.min.css','mono-blue.min.css','monokai-sublime.min.css','monokai.min.css','obsidian.min.css','ocean.min.css','paraiso-dark.min.css','paraiso-light.min.css','pojoaque.min.css','pojoaque.jpg','purebasic.min.css','qtcreator_dark.min.css','qtcreator_light.min.css','railscasts.min.css','rainbow.min.css','school-book.min.css','solarized-dark.min.css','solarized-light.min.css','sunburst.min.css','tomorrow-night-blue.min.css','tomorrow-night-bright.min.css','tomorrow-night-eighties.min.css','tomorrow-night.min.css','tomorrow.min.css','vs.min.css','xcode.min.css','xt256.min.css','zenburn.min.css'];
+    
+    var allLangs = ['php', 'js', 'python', 'cs', 'java', 'ruby'];
+  
+    var cssLink = document.getElementById('hljs_css');
+    var toHighlight = document.getElementById('hljs_tohighlight');
+    var highlighted = document.getElementById('hljs_highlighted');
+    var styleSelect = document.getElementById('hljs_style_select');
+    var langSelect = document.getElementById('hljs_lang_select');
+    
+    document.getElementById('hljs_btn').addEventListener('click', function() {
+      var style = styleSelect.value;
+      var styleUrl = '//cdn.jsdelivr.net/highlight.js/9.4.0/styles/' + style;
+      cssLink.href = styleUrl;
+      
+      highlighted.className = langSelect.value;
+      
+      render()
+    });
+    
+    function render() {
+      var codeText = toHighlight.innerText;
+      highlighted.innerText = codeText;
+      hljs.highlightBlock(highlighted);
+    }
+    
+    allStyles.forEach(function(style) {
+      var option = document.createElement('option');
+      option.value = style;
+      option.text = style;
+      styleSelect.appendChild(option);
+    });
+    
+    allLangs.forEach(function(lang) {
+      var option = document.createElement('option');
+      option.value = lang;
+      option.text = lang;
+      langSelect.appendChild(option);
+    });
+    
+  </script>
+</html>
