@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>JS Bin</title>
+  <title>Code Snippet Highlighter</title>
   <link id="hljs_css" rel="stylesheet" href="" />
   <script src="//cdn.jsdelivr.net/highlight.js/9.4.0/highlight.min.js"></script>
   <style>
@@ -20,7 +20,29 @@
     
     #hljs_tohighlight {
       border: 1px solid red;
+      min-height: 100px;
     }
+    
+    .desc {
+      float: left;
+      width: 30%;
+    }
+    
+    .action {
+      float: right;
+      width: 65%;
+      clear: right;
+    }
+    
+    section {
+      clear: both;
+      overflow: auto;
+    }
+    
+    p {
+      margin-top: 0;
+    }
+  
   </style>
 </head>
 <body>
@@ -31,28 +53,46 @@
   
   <h2>Usage</h2>
 
-  <p>Update the code below.</p>
-
+  <section class="code">
+    <div class="desc">
+      <p>Either select a preset code example or manually enter some code.</p>
+    </div>
+    <div class="action">
+      <select id="hljs_preset"></select>
   <pre id="hljs_tohighlight" contenteditable="true" spellcheck="false">
-  var Nexmo = require('nexmo');
-
-  var nexmo = new Nexmo({apiKey: API_KEY, apiSecret: API_SECRET});
-  nexmo.message.sendSms(TO_NUMBER, FROM_NUMBER, 'Hello from Nexmo!');
   </pre>
+    </div>
 
-  <p>Ensure the correct language is selected</p>
-  <select id="hljs_lang_select"></select>
+</section>
 
-  <p>Choose an appropriate style e.g. for Ruby we could use railscasts, for JS we could use monokai-sublime.min.css (sublime is commonly used as a JS editor), for .NET use the one with "vs" in it (Visual Studio), for Java use the "android" one etc.</p>
-  <select id="hljs_style_select"></select>
+<section class="language">
+  <div class="desc">
+    <p>Ensure the correct language is selected</p>
+  </div>
+  <div class="action">
+    <select id="hljs_lang_select"></select>
+  </div>
+</section>
 
-  <p>Click highlight</p>
-  <button id="hljs_btn">highlight</button>
+<section class="highlight">
+  <div class="desc">
+    <p>Choose an appropriate style e.g. for Ruby you could use railscasts, for JS you could use monokai-sublime.min.css (sublime is commonly used as a JS editor), for .NET use the one with "vs" in it (Visual Studio), for Java use the "android" one etc.</p>
+  </div>
+  <div class="action">
+    <select id="hljs_style_select"></select>
+  </div>
+</section>
   
-  <pre><code class="js" id="hljs_highlighted">
-  </code></pre>
-  
-  <p>Now, take a screenshot of the part of the code that you want to use. </p>
+<section>
+  <div class="desc">
+    <p>Now, take a screenshot of the part of the code that you want to use. </p>
+  </div>
+  <div class="action">
+    <pre><code class="js" id="hljs_highlighted">
+    </code></pre>
+  </div>
+</section>
+
 </body>
   <script>
     var allStyles = ['agate.min.css','androidstudio.min.css','arduino-light.min.css','arta.min.css','ascetic.min.css','atelier-cave-dark.min.css','atelier-cave-light.min.css','atelier-dune-dark.min.css','atelier-dune-light.min.css','atelier-estuary-dark.min.css','atelier-estuary-light.min.css','atelier-forest-dark.min.css','atelier-forest-light.min.css','atelier-heath-dark.min.css','atelier-heath-light.min.css','atelier-lakeside-dark.min.css','atelier-lakeside-light.min.css','atelier-plateau-dark.min.css','atelier-plateau-light.min.css','atelier-savanna-dark.min.css','atelier-savanna-light.min.css','atelier-seaside-dark.min.css','atelier-seaside-light.min.css','atelier-sulphurpool-dark.min.css','atelier-sulphurpool-light.min.css','brown-paper.min.css','codepen-embed.min.css','color-brewer.min.css','dark.min.css','darkula.min.css','default.min.css','docco.min.css','dracula.min.css','far.min.css','foundation.min.css','github-gist.min.css','github.min.css','googlecode.min.css','grayscale.min.css','gruvbox-dark.min.css','gruvbox-light.min.css','hopscotch.min.css','hybrid.min.css','idea.min.css','ir-black.min.css','kimbie.dark.min.css','kimbie.light.min.css','magula.min.css','mono-blue.min.css','monokai-sublime.min.css','monokai.min.css','obsidian.min.css','ocean.min.css','paraiso-dark.min.css','paraiso-light.min.css','pojoaque.min.css','pojoaque.jpg','purebasic.min.css','qtcreator_dark.min.css','qtcreator_light.min.css','railscasts.min.css','rainbow.min.css','school-book.min.css','solarized-dark.min.css','solarized-light.min.css','sunburst.min.css','tomorrow-night-blue.min.css','tomorrow-night-bright.min.css','tomorrow-night-eighties.min.css','tomorrow-night.min.css','tomorrow.min.css','vs.min.css','xcode.min.css','xt256.min.css','zenburn.min.css'];
@@ -64,10 +104,6 @@
     var highlighted = document.getElementById('hljs_highlighted');
     var styleSelect = document.getElementById('hljs_style_select');
     var langSelect = document.getElementById('hljs_lang_select');
-    
-    document.getElementById('hljs_btn').addEventListener('click', function() {      
-      render()
-    });
     
     function render() {
       var style = styleSelect.value;
@@ -95,6 +131,76 @@
       langSelect.appendChild(option);
     });
     
+    var presets = [
+      {
+        name: 'Node SMS',
+        lang: 'js',
+        syntax: 'monokai-sublime.min.css',
+        code: "\
+var Nexmo = require('nexmo');\n\
+\n\
+var nexmo = new Nexmo({apiKey: 'API_KEY', apiSecret: 'API_SECRET'});\n\
+nexmo.message.sendSms('TO_NUMBER', 'FROM_NUMBER', 'Hello from Nexmo!');"
+      },
+      {
+        name: 'Python SMS',
+        lang: 'python',
+        syntax: 'monokai-sublime.min.css',
+        code: "\
+import nexmo\n\
+\n\
+client = nexmo.Client(key='API_KEY', secret='API_SECRET')\n\
+client.send_message({'from': 'FROM_NUMBER', 'to': 'TO_NUMBER', 'text': 'Hello from Nexmo!'})"
+      },
+      {
+        name: 'Ruby SMS',
+        lang: 'ruby',
+        syntax: 'railscasts.min.css',
+        code: "\
+require 'nexmo'\n\
+\n\
+client = Nexmo::Client.new(key: 'API_KEY', secret: 'API_SECRET')\n\
+client.send_message(from: 'FROM_NUMBER', to: 'TO_NUMBER', text: 'Hello from Nexmo!')"
+      },
+      {
+        name: 'PHP SMS',
+        lang: 'php',
+        syntax: 'monokai-sublime.min.css',
+        code: "\
+use Nexmo\\Client;\n\
+\n\
+$client = new Nexmo\Client(new Nexmo\Credentials\Basic(API_KEY, API_SECRET));\n\
+$message = $client->message()->send([\n\
+  'to' => FROM_NUMBER,\n\
+  'from' => TO_NUMBER,\n\
+  'text' => 'Hello from Nexmo!'\n\
+]);"
+      }
+    ];
+    
+    var presetSelect = document.getElementById('hljs_preset');
+    presets.forEach(function(preset, index) {
+      var option = document.createElement('option');
+      option.value = index;
+      option.text = preset.name;
+      presetSelect.appendChild(option);
+    });
+    
+    function updatePreset() {
+      var preset = presets[presetSelect.value];
+      toHighlight.textContent = preset.code;
+      langSelect.value = preset.lang;
+      styleSelect.value = preset.syntax;
+      render();
+    }
+    
+    presetSelect.addEventListener('change', updatePreset);
+    
+    toHighlight.addEventListener('keyup', render);
+    styleSelect.addEventListener('change', render);
+    langSelect.addEventListener('change', render);
+    
+    updatePreset();
     render();
     
   </script>
