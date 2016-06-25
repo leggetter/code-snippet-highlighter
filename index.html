@@ -169,10 +169,10 @@ client.send_message(from: 'FROM_NUMBER', to: 'TO_NUMBER', text: 'Hello from Nexm
         code: "\
 use Nexmo\\Client;\n\
 \n\
-$client = new Nexmo\Client(new Nexmo\Credentials\Basic(API_KEY, API_SECRET));\n\
+$client = new Nexmo\\Client(new Nexmo\\Credentials\\Basic('API_KEY', 'API_SECRET'));\n\
 $message = $client->message()->send([\n\
-  'to' => FROM_NUMBER,\n\
-  'from' => TO_NUMBER,\n\
+  'to' => 'FROM_NUMBER',\n\
+  'from' => 'TO_NUMBER',\n\
   'text' => 'Hello from Nexmo!'\n\
 ]);"
       }
